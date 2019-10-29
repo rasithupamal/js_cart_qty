@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Increment</title>
+</head>
+
+<body>
+    <div class="p-3">
+        <div class="flex flex-row"><button onclick='decrement("num_1",100)'
+                class="flex justify-center items-center h-8 w-8 mr-1 p-2 bg-xred-320 rounded-full text-black button_add">-</button>
+            <input id="num_1" disabled value="0" type="number"
+                class="w-12 flex justify-center items-center text-center"> <button onclick='increment("num_1",100)'
+                class="flex justify-center items-center h-8 w-8 mr-1 p-2 bg-xred-320 rounded-full text-black button_sub">+</button>
+        </div>
+    </div>
+    <div class="p-3">
+        <div class="flex flex-row"><button onclick='decrement("num_2",250)'
+                class="flex justify-center items-center h-8 w-8 mr-1 p-2 bg-xred-320 rounded-full text-black button_add">-</button>
+            <input id="num_2" disabled value="0" type="number"
+                class="w-12 flex justify-center items-center text-center"> <button onclick='increment("num_2",250)'
+                class="flex justify-center items-center h-8 w-8 mr-1 p-2 bg-xred-320 rounded-full text-black button_sub">+</button>
+        </div>
+    </div>
+    <div class="p-3">
+        <input type="number" id="total" value="0" readonly>
+    </div>
+
+    <script>
+        let tickets = [];
+        function increment(id, price) {
+            let total = document.getElementById('total');
+            let total_value = total.value;
+            let input = document.getElementById(id);
+            let input_value = input.value;
+            input.value = parseInt(input_value) + 1;
+            total.value = parseInt(total_value) + price;
+
+            let ku = tickets.find(x => x.id === id);
+            let kuIndex = tickets.findIndex(x => x.id === id);
+            if (ku) {
+                ku.qty = input.value;
+                ku.amount = price * input.value;
+                tickets[kuIndex] = ku;
+            } else {
+                let obj = {
+                    id: id,
+                    price: price,
+                    qty: input.value,
+                    amount: price * input.value
+                }
+                tickets.push(obj);
+            }
+
+            // console.log("AR : ", tickets);
+            var rsTotal = tickets.reduce(function (prev, cur) {
+                return prev + cur.amount;
+            }, 0);
+
+            // console.log('Total Rs:', rsTotal);
+        }
+        function decrement(id, price) {
+            let total = document.getElementById('total');
+            let total_value = total.value;
+            let input = document.getElementById(id);
+            let input_value = input.value;
+            let kl = tickets.find(x => x.id === id);
+            let klIndex = tickets.findIndex(x => x.id === id);
+            if (input_value != 0) {
+                input.value = parseInt(input_value) - 1;
+                total.value = parseInt(total_value) - price;
+                if (kl) {
+                    kl.qty = input.value;
+                    kl.amount = price * input.value;
+                    tickets[klIndex] = kl;
+                } else {
+                    let obj = {
+                        id: id,
+                        price: price,
+                        qty: input.value,
+                        amount: price * input.value
+                    }
+                    tickets.push(obj);
+                }
+            }
+
+            // console.log("AR : ", tickets);
+            var rsTotal = tickets.reduce(function (prev, cur) {
+                return prev + cur.amount;
+            }, 0);
+
+            // console.log('Total Rs:', rsTotal);
+        }
+    </script>
+
+</body>
+
+</html>
